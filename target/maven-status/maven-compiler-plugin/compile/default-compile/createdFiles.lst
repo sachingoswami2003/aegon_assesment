@@ -1,0 +1,12 @@
+com\aegon\model\Room.class
+com\aegon\controller\CustomerBookingRoomDetailsController.class
+com\aegon\Application.class
+com\aegon\model\Fare.class
+com\aegon\service\impl\DefaultRoomBookingServices.class
+com\aegon\model\BookedRoom.class
+com\aegon\model\Book.class
+com\aegon\service\RoomBookingService.class
+com\aegon\controller\BookingDetailsController.class
+com\aegon\model\Customer.class
+com\aegon\exception\RemoteServiceException.class
+com\aegon\SwaggerConfig.class
