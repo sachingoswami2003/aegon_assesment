@@ -3,7 +3,8 @@
  */
 package com.aegon.model;
 
-import java.util.Date;
+
+import java.io.Serializable;
 
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public class BookedRoom {
+public class BookedRoom implements Serializable {
 
 	private String bookedRoomId;
 	private int numberOfRoom;
@@ -104,5 +105,19 @@ public class BookedRoom {
 	public final void setBookingStatus(boolean bookingStatus) {
 		this.bookingStatus = bookingStatus;
 	}
+	
+	@Override
+    public boolean equals(Object o) {
 
+        if (o == this) return true;
+        if (!(o instanceof BookedRoom)) {
+            return false;
+        }
+
+        BookedRoom bookedRoom = (BookedRoom) o;
+
+        return bookedRoom.bookedRoomId.equals(bookedRoomId) &&
+        		bookedRoom.roomType == roomType &&
+        		bookedRoom.bookingId.equals(bookingId);
+    }
 }

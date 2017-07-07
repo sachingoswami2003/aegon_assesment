@@ -10,11 +10,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aegon.exception.RemoteServiceException;
-import com.aegon.model.Customer;
 import com.aegon.model.OccupiedRoom;
 import com.aegon.service.RoomBookingService;
 
 import io.swagger.annotations.ApiOperation;
+
+/**
+* <h1>Customer room booking services!</h1>
+* The service program implements an application that
+* check room availability by customer in given date by customer 
+* the output provide in from of response.
+*
+* @author  Sachin Goswami
+* @version 1.0
+* @since   2017-07-04
+*/
 
 @RestController
 @RequestMapping(value = "/booking/rooms/{customerId}", method = RequestMethod.GET)
@@ -30,6 +40,13 @@ public class CustomerRoomsDetailsController {
 		this.roomBookingService = roomBookingService;
 	}
 	
+	/**
+     * Check room details by Customer Id.
+     * This will room details booked by specific customer.
+     * 
+     * @param customerId - a user's get room details
+     * @return The Booked rooms details
+     */
 	
 	@GetMapping
     @ApiOperation(
@@ -42,6 +59,5 @@ public class CustomerRoomsDetailsController {
         final List<OccupiedRoom> occupiedRoomList = roomBookingService.getCustomerRoomDetails(customerId);
         return ResponseEntity.ok(occupiedRoomList);
     }
-
 
 }

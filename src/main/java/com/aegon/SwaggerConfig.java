@@ -36,11 +36,6 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter{
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("swagger-ui.html")
-//            .addResourceLocations("classpath:/META-INF/resources/");
-//
-//        registry.addResourceHandler("/webjars/**")
-//            .addResourceLocations("classpath:/META-INF/resources/webjars/");
     	
     	registry.addResourceHandler("/test/**").addResourceLocations("/test/").setCachePeriod(0);
         registry.addResourceHandler("/css/**").addResourceLocations("/css/").setCachePeriod(0);
@@ -102,24 +97,4 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter{
             new ResponseMessageBuilder().code(500).message("Something went unexpectedly wrong within the service while executing the request")
                 .responseModel(API_ERROR_MODEL).build());
     }
-
-
-//	@Bean
-//	public Docket postsApi() {
-//		return new Docket(DocumentationType.SWAGGER_2).groupName("public-api")
-//				.apiInfo(apiInfo()).select().paths(PathSelectors.any()).build();
-//	}
-
-//	private Predicate<String> postPaths() {
-//		return or(regex("/booking/posts.*"), regex("/booking/.*"));
-//	}
-
-//	private ApiInfo apiInfo() {
-//		return new ApiInfoBuilder().title("JavaInUse API")
-//				.description("JavaInUse API reference for developers")
-//				.termsOfServiceUrl("http://localhost:4041/javainuse.com")
-//				.contact("javainuse@gmail.com").license("JavaInUse License")
-//				.licenseUrl("javainuse@gmail.com").version("1.0").build();
-//	}
-
 }

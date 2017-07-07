@@ -57,4 +57,19 @@ public class Customer {
 	public final void setMembershipStatus(boolean membershipStatus) {
 		this.membershipStatus = membershipStatus;
 	}
+	
+	@Override
+    public boolean equals(Object o) {
+
+        if (o == this) return true;
+        if (!(o instanceof Customer)) {
+            return false;
+        }
+
+        Customer customer = (Customer) o;
+
+        return customer.customerId.equals(customerId) &&
+        		customer.firstName.equals(firstName) &&
+        		customer.lastName.equals(lastName);
+    }
 }

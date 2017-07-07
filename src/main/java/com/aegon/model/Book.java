@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class Book implements Serializable {
 	
-	@Null
 	private String bookingId;
 	private String customerId;
 	private String checkInDate;
@@ -103,4 +102,19 @@ public class Book implements Serializable {
 	public final void setRoomBreakfastsrviceFlag(boolean roomBreakfastsrviceFlag) {
 		this.roomBreakfastsrviceFlag = roomBreakfastsrviceFlag;
 	}
+	
+	@Override
+    public boolean equals(Object o) {
+
+        if (o == this) return true;
+        if (!(o instanceof Book)) {
+            return false;
+        }
+
+        Book book = (Book) o;
+
+        return book.bookingId.equals(bookingId) &&
+        		book.noOfRoomRequired == noOfRoomRequired &&
+        		book.customerId.equals(customerId);
+    }
 }
