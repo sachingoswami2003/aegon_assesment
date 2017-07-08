@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 
-import com.aegon.model.OccupiedRoom;
+import com.aegon.model.OccupiedRooms;
 import com.aegon.service.RoomBookingService;
 
 /**
@@ -36,8 +36,8 @@ public class CustomerRoomsDetailsControllerUnitTest {
 	@Test
 	public void getCustomerRoomDetails() throws Exception {
 		
-		String testCustomerId = "Cus01";
-		List<OccupiedRoom> occupiedRoomList = new ArrayList<OccupiedRoom>();
+		long testCustomerId = 1;
+		List<OccupiedRooms> occupiedRoomList = new ArrayList<OccupiedRooms>();
 		
 		when(roomBookingServices.getCustomerRoomDetails(testCustomerId)).thenReturn(occupiedRoomList);
 		

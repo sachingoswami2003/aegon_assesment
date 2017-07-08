@@ -1,15 +1,30 @@
 package com.aegon.model;
 
-import org.springframework.stereotype.Component;
+import javax.persistence.*;
 
-@Component
+/**
+ * @author Sachin
+ *
+ * Room Details where users booked their stays.
+ */
+
+@Entity
+@Table(name = "room")
 public class Room {
-
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String roomId;
 	private String roomType;
-	private String roomStatus;
-	private String roomPrice;
+	private float roomPrice;
+	private float breakFastPrice;
 	
+	
+	public Room(String roomType, float roomPrice, float breakFastPrice) {
+		this.roomType = roomType;
+		this.roomPrice = roomPrice;
+		this.breakFastPrice = breakFastPrice;
+	}
 	/**
 	 * @return the roomId
 	 */
@@ -35,28 +50,28 @@ public class Room {
 		this.roomType = roomType;
 	}
 	/**
-	 * @return the roomStatus
-	 */
-	public final String getRoomStatus() {
-		return roomStatus;
-	}
-	/**
-	 * @param roomStatus the roomStatus to set
-	 */
-	public final void setRoomStatus(String roomStatus) {
-		this.roomStatus = roomStatus;
-	}
-	/**
 	 * @return the roomPrice
 	 */
-	public final String getRoomPrice() {
+	public final float getRoomPrice() {
 		return roomPrice;
 	}
 	/**
 	 * @param roomPrice the roomPrice to set
 	 */
-	public final void setRoomPrice(String roomPrice) {
+	public final void setRoomPrice(float roomPrice) {
 		this.roomPrice = roomPrice;
+	}
+	/**
+	 * @return the breakFastPrice
+	 */
+	public final float getBreakFastPrice() {
+		return breakFastPrice;
+	}
+	/**
+	 * @param breakFastPrice the breakFastPrice to set
+	 */
+	public final void setBreakFastPrice(float breakFastPrice) {
+		this.breakFastPrice = breakFastPrice;
 	}
 	
 }

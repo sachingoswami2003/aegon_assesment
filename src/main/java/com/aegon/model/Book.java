@@ -1,21 +1,36 @@
 package com.aegon.model;
 
-import java.io.Serializable;
-
 import java.util.Date;
 
-import javax.validation.constraints.Null;
+import javax.persistence.*;
 
-import org.springframework.stereotype.Component;
-@Component
-public class Book implements Serializable {
+/**
+ * A Book where users may book stays.
+ */
+@Entity
+@Table(name = "bookroom")
+public class Book {
 	
-	private String bookingId;
-	private String customerId;
-	private String checkInDate;
-	private String checkOutDate;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long bookingId;
+	private long customerId;
+	private Date checkInDate;
+	private Date checkOutDate;
 	private int noOfRoomRequired;
 	private boolean roomBreakfastsrviceFlag;
+	
+	public Book(Date checkOutDate, Date checkInDate, long customerId, 
+			long bookingId, int noOfRoomRequired, boolean roomBreakfastsrviceFlag) 
+	{
+		this.checkInDate = checkInDate;
+		this.checkOutDate = checkOutDate;
+		this.customerId = customerId;
+		this.bookingId = bookingId;
+		this.noOfRoomRequired = noOfRoomRequired;
+		this.roomBreakfastsrviceFlag = roomBreakfastsrviceFlag;
+	}
+	
 	/**
 	 * @return the noOfRoomRequired
 	 */
@@ -33,7 +48,7 @@ public class Book implements Serializable {
 	/**
 	 * @return the bookingId
 	 */
-	public final String getBookingId() {
+	public final long getBookingId() {
 		return bookingId;
 	}
 
@@ -41,14 +56,14 @@ public class Book implements Serializable {
 	 * @param bookingId
 	 *            the bookingId to set
 	 */
-	public final void setBookingId(String bookingId) {
+	public final void setBookingId(long bookingId) {
 		this.bookingId = bookingId;
 	}
 
 	/**
 	 * @return the customerId
 	 */
-	public final String getCustomerId() {
+	public final long getCustomerId() {
 		return customerId;
 	}
 
@@ -56,14 +71,14 @@ public class Book implements Serializable {
 	 * @param customerId
 	 *            the customerId to set
 	 */
-	public final void setCustomerId(String customerId) {
+	public final void setCustomerId(long customerId) {
 		this.customerId = customerId;
 	}
 
 	/**
 	 * @return the checkIn
 	 */
-	public final String getCheckInDate() {
+	public final Date getCheckInDate() {
 		return checkInDate;
 	}
 
@@ -71,14 +86,14 @@ public class Book implements Serializable {
 	 * @param string
 	 *            the checkIn to set
 	 */
-	public final void setCheckInDate(String checkIn) {
+	public final void setCheckInDate(Date checkIn) {
 		this.checkInDate = checkIn;
 	}
 
 	/**
 	 * @return the checkOut
 	 */
-	public final String getCheckOutDate() {
+	public final Date getCheckOutDate() {
 		return checkOutDate;
 	}
 
@@ -86,7 +101,7 @@ public class Book implements Serializable {
 	 * @param checkOut
 	 *    the checkOut to set
 	 */
-	public final void setCheckOutDate(String checkOut) {
+	public final void setCheckOutDate(Date checkOut) {
 		this.checkOutDate = checkOut;
 	}
 	
@@ -103,7 +118,7 @@ public class Book implements Serializable {
 		this.roomBreakfastsrviceFlag = roomBreakfastsrviceFlag;
 	}
 	
-	@Override
+	/*@Override
     public boolean equals(Object o) {
 
         if (o == this) return true;
@@ -116,5 +131,5 @@ public class Book implements Serializable {
         return book.bookingId.equals(bookingId) &&
         		book.noOfRoomRequired == noOfRoomRequired &&
         		book.customerId.equals(customerId);
-    }
+    }*/
 }

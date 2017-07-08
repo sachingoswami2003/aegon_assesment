@@ -11,7 +11,9 @@ import org.springframework.stereotype.Component;
 /**
  * @author Sachin
  *
+ * A Book where users may book stays.
  */
+
 @Component
 public class BookedRoom implements Serializable {
 

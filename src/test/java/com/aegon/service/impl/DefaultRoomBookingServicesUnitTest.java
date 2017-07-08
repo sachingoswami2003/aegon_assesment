@@ -4,6 +4,14 @@
 package com.aegon.service.impl;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,12 +19,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.aegon.model.Book;
-import com.aegon.model.BookedRoom;
-import com.aegon.model.Customer;
-import com.aegon.model.OccupiedRoom;
-
-
+import com.aegon.dao.impl.CustomerRequestDAO;
+import com.aegon.dao.impl.OccupiedRoomsRequestDAO;
+import com.aegon.model.OccupiedRooms;
 
 /**
  * @author Sachin Goswami
@@ -26,57 +31,85 @@ import com.aegon.model.OccupiedRoom;
 public class DefaultRoomBookingServicesUnitTest {
 	
 	@Mock
-	Book book;
-	
+	CustomerRequestDAO customerRequestDAO;
 	@Mock
-	Customer customer;
+	private OccupiedRoomsRequestDAO occupiedRoomsRequestDAO;
 	
 	@InjectMocks
 	DefaultRoomBookingServices defaultRoomBookingServices;
 	
 	@Test
 	public void updateRoomDetails() throws Exception {
-		
-		BookedRoom expectedBookedRoom = new BookedRoom();
-		expectedBookedRoom.setBookedRoomId("R02");
-		expectedBookedRoom.setBookingId("B02");
-		expectedBookedRoom.setBookingStatus(true);
-		expectedBookedRoom.setNumberOfRoom(1);
-		expectedBookedRoom.setRoomCharges(200);
-		expectedBookedRoom.setRoomType("Simple");
-		
-		OccupiedRoom occupiedRoom = new OccupiedRoom();
-		occupiedRoom.setBookingId("B02");
-		occupiedRoom.setCheckInDate("06/07/2017");
-		occupiedRoom.setCheckOutDate("08/07/2017");
-		occupiedRoom.setRoomId("R02");
-		occupiedRoom.setNumberOfRoom(1);
-		occupiedRoom.setRoomType("Simple");
-		
-		BookedRoom actualBookedRoom = defaultRoomBookingServices.updateRoomDetails(occupiedRoom);
+		OccupiedRooms occupiedRoom = mock(OccupiedRooms.class);
+		String actualBookedRoom = defaultRoomBookingServices.updateRoomDetails(occupiedRoom);
+		String expectedBookedRoom = "Booking Details has been updated";
 		
 		assertEquals(actualBookedRoom, expectedBookedRoom);
 	}
 	
-//	@Test
-//	public void getRoomDetails() throws Exception {
-//		
-//	}
+	@Test
+	public void getRoomDetails() throws Exception {
+		long roomId = 1;
+		OccupiedRooms occupiedRoom = mock(OccupiedRooms.class);
+		List<OccupiedRooms> roomList = new ArrayList<OccupiedRooms>(); 
+		
+		when(occupiedRoomsRequestDAO.getRoomDetails(roomId)).thenReturn(roomList);
+		List<OccupiedRooms> actualBookedRoomList = defaultRoomBookingServices.getRoomDetails(roomId);
+		
+		assertEquals(actualBookedRoomList, roomList);
+	}
 	
-//	@Test
-//	public void getCustomerRoomDetails() throws Exception {
-//		
-//	}
-//	
-//	@Test
-//	public void saveRoomDetails() throws Exception {
-//		
-//	}
-//	
-//	@Test
-//	public void checkRoomsAvailabiltyForGivenDates() throws Exception {
-//		
-//		
-//	}
+	@Test
+	public void getCustomerRoomDetails() throws Exception {
+		long customerId = 123;
+		OccupiedRooms occupiedRoom = mock(OccupiedRooms.class);
+		List<OccupiedRooms> cutomerList = new ArrayList<OccupiedRooms>(); 
+
+		when(customerRequestDAO.findBookings(customerId)).thenReturn(cutomerList);
+		
+		List<OccupiedRooms> actualCustomerRoomList = defaultRoomBookingServices.getCustomerRoomDetails(customerId);
+		
+		assertEquals(actualCustomerRoomList, cutomerList);
+	}
 	
+	@Test
+	public void saveRoomDetails() throws Exception {
+		OccupiedRooms occupiedRoom = mock(OccupiedRooms.class);
+		String saveMeaasge = "Room has been booked";
+		String actualSaveMessage = defaultRoomBookingServices.saveRoomDetails(occupiedRoom);
+		
+		assertEquals(actualSaveMessage, saveMeaasge);
+	}
+		
+	
+	@Test
+	public void checkRoomsAvailabiltyForGivenDates() throws Exception {
+		long roomId = 123;
+		Date testCheckInDate = getDateFromat("07-07-2017");
+		Date testCheckOutDate = getDateFromat("08-07-2017");
+		
+		OccupiedRooms occupiedRoom = mock(OccupiedRooms.class);
+		List<OccupiedRooms> availableRoomList = new ArrayList<OccupiedRooms>();
+		
+		when(occupiedRoomsRequestDAO.findAvailableRoomsBetweenDates(roomId, testCheckInDate, testCheckOutDate)).thenReturn(availableRoomList);
+		
+		List<OccupiedRooms> actualRoomList = defaultRoomBookingServices.checkRoomsAvailabiltyForGivenDates(roomId, testCheckInDate, testCheckOutDate);
+		
+		assertEquals(actualRoomList, availableRoomList);
+	}
+	
+	/**
+     * To convert DATE in simple date format .
+     */
+	private Date getDateFromat(String strDate) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = null;
+		try {
+			date = sdf.parse(strDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return date;
+	}
 }

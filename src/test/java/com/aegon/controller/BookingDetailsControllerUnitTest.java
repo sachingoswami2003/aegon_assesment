@@ -6,7 +6,10 @@ package com.aegon.controller;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -18,7 +21,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.aegon.model.Book;
 import com.aegon.model.BookedRoom;
-import com.aegon.model.OccupiedRoom;
+import com.aegon.model.OccupiedRooms;
 import com.aegon.service.RoomBookingService;
 
 
@@ -37,8 +40,10 @@ public class BookingDetailsControllerUnitTest {
 	
 	@Test
 	public void getRoomInfo() throws Exception{
-		String testRoomId = "R02";
-		List<OccupiedRoom> roomlist = new ArrayList<OccupiedRoom>();
+		long testRoomId = 2;
+		List<OccupiedRooms> roomlist = new ArrayList<OccupiedRooms>();
+		
+		when(roomBookingServices.getRoomDetails(testRoomId)).thenReturn(roomlist);
 		
 		when(roomBookingServices.getRoomDetails(testRoomId)).thenReturn(roomlist);
 		
@@ -49,38 +54,54 @@ public class BookingDetailsControllerUnitTest {
 	
 	@Test
 	public void getRoomAvailability() throws Exception{
-		String testArriveDate = "07/07/2017";
-		String testDepartDate = "08/07/2017";
-		List<OccupiedRoom> roomlist = new ArrayList<OccupiedRoom>();
+		long testRoomId = 2;
+		Date testArriveDate = getDateFromat("07-07-2017");
+		Date testDepartDate = getDateFromat("08-07-2017");
+		List<OccupiedRooms> roomlist = new ArrayList<OccupiedRooms>();
 		
-		when(roomBookingServices.checkRoomsAvailabiltyForGivenDates(testArriveDate, testDepartDate)).thenReturn(roomlist);
+		when(roomBookingServices.checkRoomsAvailabiltyForGivenDates(testRoomId, testArriveDate, testDepartDate)).thenReturn(roomlist);
 		
-		ResponseEntity<?> actualResponse = bookingDetailsControler.getRoomAvailability(testArriveDate, testDepartDate);
+		ResponseEntity<?> actualResponse = bookingDetailsControler.getRoomAvailability(testRoomId,testArriveDate, testDepartDate);
 		
 		assertEquals(ResponseEntity.ok(roomlist), actualResponse);
 	}
 	
 	@Test
 	public void bookRoom() throws Exception{
-		Book testBook = new Book();
-		BookedRoom testRoomBooking = new BookedRoom();
+		String str = "Room has been booked";
+		OccupiedRooms occupiedRooms = new OccupiedRooms();
 		
-		when(roomBookingServices.saveRoomDetails(testBook)).thenReturn(testRoomBooking);
+		when(roomBookingServices.saveRoomDetails(occupiedRooms)).thenReturn(str);
 		
-		ResponseEntity<?> actualResponse = bookingDetailsControler.bookRoom(testBook);
+		String actualResponse = bookingDetailsControler.bookRoom(occupiedRooms);
 		
-		assertEquals(ResponseEntity.ok(testRoomBooking), actualResponse);
+		assertEquals(str, actualResponse);
 	}
 	
 	@Test
 	public void updateBookedRoom() throws Exception{
-		OccupiedRoom testOccupiedRoom = new OccupiedRoom();
-		BookedRoom testBookedRoom = new BookedRoom();
+		OccupiedRooms testOccupiedRoom = new OccupiedRooms();
+		String testBookedRoom = "Booking Details has been updated";
 		
 		when(roomBookingServices.updateRoomDetails(testOccupiedRoom)).thenReturn(testBookedRoom);
 		
 		ResponseEntity<?> actualResponse = bookingDetailsControler.updateBookedRoom(testOccupiedRoom);
 		
 		assertEquals(ResponseEntity.ok(testBookedRoom), actualResponse);
+	}
+	
+	/**
+     * To convert DATE in simple format .
+     */
+	private Date getDateFromat(String strDate) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = null;
+		try {
+			date = sdf.parse(strDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return date;
 	}
 }

@@ -1,11 +1,12 @@
 package com.aegon.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.aegon.exception.RemoteServiceException;
 import com.aegon.model.Book;
 import com.aegon.model.BookedRoom;
-import com.aegon.model.OccupiedRoom;
+import com.aegon.model.OccupiedRooms;
 
 /**
 * <h1>RoomBookingService Interface!</h1>
@@ -28,7 +29,7 @@ public interface RoomBookingService {
 	     * @param roomId - a user's get room details
 	     * @return The Booked room details
 	     */
-	    BookedRoom saveRoomDetails(Book book) throws RemoteServiceException;
+	    String saveRoomDetails(OccupiedRooms occupiedRoom) throws RemoteServiceException;
 	    
 	    /**
 	     * Check room details by roomId.
@@ -38,7 +39,7 @@ public interface RoomBookingService {
 	     * @param roomId - a user's get room details
 	     * @return The OccupiedRoom details
 	     */
-	    List<OccupiedRoom> getRoomDetails(String roomId)throws RemoteServiceException;
+	    List<OccupiedRooms> getRoomDetails(long roomId)throws RemoteServiceException;
 	    
 	    /**
 	     * Check room details by Customer Id.
@@ -48,7 +49,7 @@ public interface RoomBookingService {
 	     * @return The Booked rooms details
 	     */
 	    
-	    List<OccupiedRoom> getCustomerRoomDetails(String customerId)throws RemoteServiceException;
+	    List<OccupiedRooms> getCustomerRoomDetails(long customerId)throws RemoteServiceException;
 	    
 	    /**
 	     * Check room details by BookingId provided by user in Occupied room object.
@@ -58,7 +59,7 @@ public interface RoomBookingService {
 	     * @return The BookedRoom details
 	     */
 
-	    BookedRoom updateRoomDetails(OccupiedRoom occupiedRoom) throws RemoteServiceException;
+	    String updateRoomDetails(OccupiedRooms occupiedRoom) throws RemoteServiceException;
 	    
 	    /**
 	     * Check room details by Customer Id.
@@ -68,5 +69,15 @@ public interface RoomBookingService {
 	     * @param departureDate - to check room availability till the given date
 	     * @return The availability of Room details
 	     */
-	    List<OccupiedRoom> checkRoomsAvailabiltyForGivenDates(String arrivalDate, String departureDate) throws RemoteServiceException;
+	    List<OccupiedRooms> checkRoomsAvailabiltyForGivenDates(long room_Id, Date check_In, Date check_out) throws RemoteServiceException;
+	    
+	    /**
+	     * Check expenses details by Customer Id.
+	     * This will room details require to book.
+	     * @param <customeId> to check room expenses need to pay
+	   
+	     * @return The total bill amount for Room details
+	     */
+
+		public List<Book> findBookingsCost(long customeId) throws RemoteServiceException;
 	}
