@@ -4,6 +4,7 @@
 package com.aegon.controller;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.text.ParseException;
@@ -18,12 +19,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
-
-import com.aegon.model.Book;
-import com.aegon.model.BookedRoom;
 import com.aegon.model.OccupiedRooms;
 import com.aegon.service.RoomBookingService;
-
 
 /**
  * @author Sachin
@@ -57,6 +54,7 @@ public class BookingDetailsControllerUnitTest {
 		long testRoomId = 2;
 		Date testArriveDate = getDateFromat("07-07-2017");
 		Date testDepartDate = getDateFromat("08-07-2017");
+		
 		List<OccupiedRooms> roomlist = new ArrayList<OccupiedRooms>();
 		
 		when(roomBookingServices.checkRoomsAvailabiltyForGivenDates(testRoomId, testArriveDate, testDepartDate)).thenReturn(roomlist);
@@ -71,23 +69,22 @@ public class BookingDetailsControllerUnitTest {
 		String str = "Room has been booked";
 		OccupiedRooms occupiedRooms = new OccupiedRooms();
 		
-		when(roomBookingServices.saveRoomDetails(occupiedRooms)).thenReturn(str);
+		when(roomBookingServices.saveRoomDetails(occupiedRooms)).thenReturn(occupiedRooms);
 		
-		String actualResponse = bookingDetailsControler.bookRoom(occupiedRooms);
+		OccupiedRooms actualResponse = bookingDetailsControler.bookRoom(occupiedRooms);
 		
-		assertEquals(str, actualResponse);
+		assertEquals(actualResponse,occupiedRooms);
 	}
 	
 	@Test
 	public void updateBookedRoom() throws Exception{
-		OccupiedRooms testOccupiedRoom = new OccupiedRooms();
-		String testBookedRoom = "Booking Details has been updated";
+		OccupiedRooms testOccupiedRoom = mock(OccupiedRooms.class);
 		
-		when(roomBookingServices.updateRoomDetails(testOccupiedRoom)).thenReturn(testBookedRoom);
+		when(roomBookingServices.updateRoomDetails(testOccupiedRoom)).thenReturn(testOccupiedRoom);
 		
-		ResponseEntity<?> actualResponse = bookingDetailsControler.updateBookedRoom(testOccupiedRoom);
+		ResponseEntity<OccupiedRooms> actualResponse = bookingDetailsControler.updateBookedRoom(testOccupiedRoom);
 		
-		assertEquals(ResponseEntity.ok(testBookedRoom), actualResponse);
+		assertEquals(ResponseEntity.ok(testOccupiedRoom), actualResponse);
 	}
 	
 	/**

@@ -4,6 +4,7 @@
 package com.aegon.model;
 
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,7 +17,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "OccupiedRooms")
-public class OccupiedRooms {
+public class OccupiedRooms implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,7 +44,6 @@ public class OccupiedRooms {
 	public OccupiedRooms(long bookingId,Date checkOutDate, Date checkInDate, long roomId, 
 			 int numberOfRoom, String roomType, long customerId) 
 	{
-//		this.occupiedId = occupiedId;
 		this.bookingId = bookingId;
 		this.checkInDate = checkInDate;
 		this.checkOutDate = checkOutDate;
@@ -150,4 +152,15 @@ public class OccupiedRooms {
 	public final void setCustomerId(Long customerId) {
 		this.customerId = customerId;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return getRoomType() + "," + getBookingId() + "," + getNumberOfRoom() + "," + getCheckInDate() + "," + getCheckOutDate();
+	}
+	
+	
 }

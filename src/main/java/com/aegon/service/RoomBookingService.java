@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.aegon.exception.RemoteServiceException;
 import com.aegon.model.Book;
-import com.aegon.model.BookedRoom;
 import com.aegon.model.OccupiedRooms;
 
 /**
@@ -29,7 +28,7 @@ public interface RoomBookingService {
 	     * @param roomId - a user's get room details
 	     * @return The Booked room details
 	     */
-	    String saveRoomDetails(OccupiedRooms occupiedRoom) throws RemoteServiceException;
+		OccupiedRooms saveRoomDetails(OccupiedRooms occupiedRoom) throws RemoteServiceException;
 	    
 	    /**
 	     * Check room details by roomId.
@@ -49,7 +48,7 @@ public interface RoomBookingService {
 	     * @return The Booked rooms details
 	     */
 	    
-	    List<OccupiedRooms> getCustomerRoomDetails(long customerId)throws RemoteServiceException;
+	    List<Book> getCustomerRoomDetails(long customerId)throws RemoteServiceException;
 	    
 	    /**
 	     * Check room details by BookingId provided by user in Occupied room object.
@@ -59,7 +58,7 @@ public interface RoomBookingService {
 	     * @return The BookedRoom details
 	     */
 
-	    String updateRoomDetails(OccupiedRooms occupiedRoom) throws RemoteServiceException;
+	    OccupiedRooms updateRoomDetails(OccupiedRooms occupiedRoom) throws RemoteServiceException;
 	    
 	    /**
 	     * Check room details by Customer Id.
@@ -79,5 +78,5 @@ public interface RoomBookingService {
 	     * @return The total bill amount for Room details
 	     */
 
-		public List<Book> findBookingsCost(long customeId) throws RemoteServiceException;
+		public List<Double> findBookingsCost(long customeId) throws RemoteServiceException;
 	}

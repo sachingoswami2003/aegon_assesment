@@ -19,8 +19,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.aegon.dao.impl.CustomerRequestDAO;
-import com.aegon.dao.impl.OccupiedRoomsRequestDAO;
+import com.aegon.dao.impl.OccupiedRoomRepository;
+import com.aegon.model.Book;
 import com.aegon.model.OccupiedRooms;
 
 /**
@@ -29,11 +29,8 @@ import com.aegon.model.OccupiedRooms;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultRoomBookingServicesUnitTest {
-	
 	@Mock
-	CustomerRequestDAO customerRequestDAO;
-	@Mock
-	private OccupiedRoomsRequestDAO occupiedRoomsRequestDAO;
+	private OccupiedRoomRepository occupiedRoomsRepository;
 	
 	@InjectMocks
 	DefaultRoomBookingServices defaultRoomBookingServices;
@@ -41,19 +38,21 @@ public class DefaultRoomBookingServicesUnitTest {
 	@Test
 	public void updateRoomDetails() throws Exception {
 		OccupiedRooms occupiedRoom = mock(OccupiedRooms.class);
-		String actualBookedRoom = defaultRoomBookingServices.updateRoomDetails(occupiedRoom);
-		String expectedBookedRoom = "Booking Details has been updated";
 		
-		assertEquals(actualBookedRoom, expectedBookedRoom);
+		when(occupiedRoomsRepository.save(occupiedRoom)).thenReturn(occupiedRoom);
+		
+		OccupiedRooms actualBookedRoom = defaultRoomBookingServices.updateRoomDetails(occupiedRoom);		
+		
+		assertEquals(actualBookedRoom, occupiedRoom);
 	}
 	
 	@Test
 	public void getRoomDetails() throws Exception {
 		long roomId = 1;
-		OccupiedRooms occupiedRoom = mock(OccupiedRooms.class);
+		
 		List<OccupiedRooms> roomList = new ArrayList<OccupiedRooms>(); 
 		
-		when(occupiedRoomsRequestDAO.getRoomDetails(roomId)).thenReturn(roomList);
+		when(occupiedRoomsRepository.findByRoomId(roomId)).thenReturn(roomList);
 		List<OccupiedRooms> actualBookedRoomList = defaultRoomBookingServices.getRoomDetails(roomId);
 		
 		assertEquals(actualBookedRoomList, roomList);
@@ -62,12 +61,11 @@ public class DefaultRoomBookingServicesUnitTest {
 	@Test
 	public void getCustomerRoomDetails() throws Exception {
 		long customerId = 123;
-		OccupiedRooms occupiedRoom = mock(OccupiedRooms.class);
-		List<OccupiedRooms> cutomerList = new ArrayList<OccupiedRooms>(); 
+		List<Book> cutomerList = new ArrayList<Book>(); 
 
-		when(customerRequestDAO.findBookings(customerId)).thenReturn(cutomerList);
+		when(occupiedRoomsRepository.findByBookRoom(customerId)).thenReturn(cutomerList);
 		
-		List<OccupiedRooms> actualCustomerRoomList = defaultRoomBookingServices.getCustomerRoomDetails(customerId);
+		List<Book> actualCustomerRoomList = defaultRoomBookingServices.getCustomerRoomDetails(customerId);
 		
 		assertEquals(actualCustomerRoomList, cutomerList);
 	}
@@ -75,10 +73,12 @@ public class DefaultRoomBookingServicesUnitTest {
 	@Test
 	public void saveRoomDetails() throws Exception {
 		OccupiedRooms occupiedRoom = mock(OccupiedRooms.class);
-		String saveMeaasge = "Room has been booked";
-		String actualSaveMessage = defaultRoomBookingServices.saveRoomDetails(occupiedRoom);
 		
-		assertEquals(actualSaveMessage, saveMeaasge);
+		when(occupiedRoomsRepository.save(occupiedRoom)).thenReturn(occupiedRoom);
+		
+		OccupiedRooms actualoccupiedRoom = defaultRoomBookingServices.saveRoomDetails(occupiedRoom);
+		
+		assertEquals(actualoccupiedRoom, occupiedRoom);
 	}
 		
 	
@@ -88,10 +88,9 @@ public class DefaultRoomBookingServicesUnitTest {
 		Date testCheckInDate = getDateFromat("07-07-2017");
 		Date testCheckOutDate = getDateFromat("08-07-2017");
 		
-		OccupiedRooms occupiedRoom = mock(OccupiedRooms.class);
 		List<OccupiedRooms> availableRoomList = new ArrayList<OccupiedRooms>();
 		
-		when(occupiedRoomsRequestDAO.findAvailableRoomsBetweenDates(roomId, testCheckInDate, testCheckOutDate)).thenReturn(availableRoomList);
+		when(occupiedRoomsRepository.findByCheckInDateAndCheckOutDate(testCheckInDate, testCheckOutDate,roomId)).thenReturn(availableRoomList);
 		
 		List<OccupiedRooms> actualRoomList = defaultRoomBookingServices.checkRoomsAvailabiltyForGivenDates(roomId, testCheckInDate, testCheckOutDate);
 		

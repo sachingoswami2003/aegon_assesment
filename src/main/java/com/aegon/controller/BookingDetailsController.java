@@ -3,6 +3,7 @@ package com.aegon.controller;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aegon.exception.RemoteServiceException;
-import com.aegon.model.Book;
-import com.aegon.model.BookedRoom;
 import com.aegon.model.OccupiedRooms;
-import com.aegon.model.Room;
 import com.aegon.service.RoomBookingService;
 
 import io.swagger.annotations.ApiOperation;
@@ -39,20 +37,9 @@ import io.swagger.annotations.ApiOperation;
 public class BookingDetailsController {
 	
 	private static final String PATH_ROOM_ID = "roomId";
-	private static final String PATH_START_DATE = "startDate";
-	private static final String PATH_END_DATE = "endDate";
-	
-	private final RoomBookingService roomBookingService;
-	
-	/**
-	 * This is BookingDetailsController constructor
-	 * @param roomBookingService
-	 */
-	
-	public BookingDetailsController(RoomBookingService roomBookingService) {
-		this.roomBookingService = roomBookingService;
-	}
-	
+		
+	@Autowired
+	RoomBookingService roomBookingService;
 	
  /**
    * This method is used to provide rooms details . 
@@ -66,7 +53,7 @@ public class BookingDetailsController {
     @ApiOperation(
             value = "Fetches the rooms detail",
             notes = "Returns rooms information",
-            response = String.class,
+            response = OccupiedRooms.class,
             responseContainer = "List"
     )
 	public ResponseEntity<List<OccupiedRooms>> getRoomInfo(@PathVariable(PATH_ROOM_ID) final long roomId) throws RemoteServiceException {
@@ -112,11 +99,12 @@ public class BookingDetailsController {
     @ApiOperation(
             value = "Booked room service",
             notes = "Set available room details as a response object",
-            response = String.class
+            response = OccupiedRooms.class
     )
-	public String bookRoom(@RequestBody final OccupiedRooms occupiedRooms) throws RemoteServiceException {
-		String roomBooking = roomBookingService.saveRoomDetails(occupiedRooms);
-    	return roomBooking;
+	public OccupiedRooms bookRoom(@RequestBody final OccupiedRooms occupiedRooms) throws RemoteServiceException {
+		
+		OccupiedRooms roomOccupiedRoomsBooking = roomBookingService.saveRoomDetails(occupiedRooms);
+    	return roomOccupiedRoomsBooking;
     }
     
 /**
@@ -131,11 +119,11 @@ public class BookingDetailsController {
     @ApiOperation(
         value = "Update the customer's Booking ",
         notes = "if the customer change his bookings details, system update accordingly",
-        response = String.class
+        response = OccupiedRooms.class
     )
-    public ResponseEntity<?> updateBookedRoom(@RequestBody final OccupiedRooms occupiedRoom) throws RemoteServiceException {
+    public ResponseEntity<OccupiedRooms> updateBookedRoom(@RequestBody final OccupiedRooms occupiedRoom) throws RemoteServiceException {
     	
-    	String updatedRoom = roomBookingService.updateRoomDetails(occupiedRoom);
+    	OccupiedRooms updatedRoom = roomBookingService.updateRoomDetails(occupiedRoom);
     	return ResponseEntity.ok(updatedRoom);
     }
 }

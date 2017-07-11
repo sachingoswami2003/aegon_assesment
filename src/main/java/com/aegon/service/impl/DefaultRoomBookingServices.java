@@ -1,14 +1,12 @@
 package com.aegon.service.impl;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.aegon.dao.impl.CustomerRequestDAO;
-import com.aegon.dao.impl.OccupiedRoomsRequestDAO;
+import com.aegon.dao.impl.BookRoomRepository;
+import com.aegon.dao.impl.OccupiedRoomRepository;
 import com.aegon.exception.RemoteServiceException;
 import com.aegon.model.Book;
 import com.aegon.model.OccupiedRooms;
@@ -22,14 +20,12 @@ import com.aegon.service.RoomBookingService;
 @Service
 public class DefaultRoomBookingServices implements RoomBookingService{
 	
+	@Autowired
+	BookRoomRepository bookRoomRepository;
 	
-	private CustomerRequestDAO customerRequestDAO;
-	private OccupiedRoomsRequestDAO occupiedRoomsRequestDAO;
-	
-	public DefaultRoomBookingServices(CustomerRequestDAO customerRequestDAO, OccupiedRoomsRequestDAO occupiedRoomsRequestDAO) {
-		this.customerRequestDAO = customerRequestDAO;
-		this.occupiedRoomsRequestDAO = occupiedRoomsRequestDAO;
-	}
+	@Autowired
+	private OccupiedRoomRepository occupiedRoomRepositroy;
+
 	/**
      * Check room details by Customer Id.
      * This will room details booked by specific customer.
@@ -39,21 +35,21 @@ public class DefaultRoomBookingServices implements RoomBookingService{
      */
 	
 	@Override
-	public String updateRoomDetails(OccupiedRooms occupiedRoom) throws RemoteServiceException {
-		occupiedRoomsRequestDAO.update(occupiedRoom);
-		return "Booking Details has been updated";
+	public OccupiedRooms updateRoomDetails(OccupiedRooms occupiedRoom) throws RemoteServiceException {
+		OccupiedRooms occupiedRooms = this.occupiedRoomRepositroy.save(occupiedRoom);
+		return occupiedRooms;
 	}
 	
 	/**
      * Check room details by roomId.
      * This will provide room details.
-      * @param roomId - a user's get room details
+     * @param roomId - a user's get room details
      * @return The OccupiedRooms details
      */
 	
 	@Override
 	public List<OccupiedRooms> getRoomDetails(long room_id) throws RemoteServiceException {
-		List<OccupiedRooms> roomList = occupiedRoomsRequestDAO.getRoomDetails(room_id);
+		List<OccupiedRooms> roomList = this.occupiedRoomRepositroy.findByRoomId(room_id);
 		return roomList;
 	}
 	
@@ -66,8 +62,8 @@ public class DefaultRoomBookingServices implements RoomBookingService{
      */
 
 	@Override
-	public List<OccupiedRooms> getCustomerRoomDetails(long customerId) throws RemoteServiceException {
-		List<OccupiedRooms> occupiedRoomByCustomer = customerRequestDAO.findBookings(customerId);
+	public List<Book> getCustomerRoomDetails(long customerId) throws RemoteServiceException {
+		List<Book> occupiedRoomByCustomer = this.occupiedRoomRepositroy.findByBookRoom(customerId);
 		return occupiedRoomByCustomer;
 	}
 	
@@ -81,9 +77,9 @@ public class DefaultRoomBookingServices implements RoomBookingService{
      */
 	
 	@Override
-	public String saveRoomDetails(OccupiedRooms occupiedRooms) throws RemoteServiceException {
-		occupiedRoomsRequestDAO.create(occupiedRooms);
-		return "Room has been booked";
+	public OccupiedRooms saveRoomDetails(OccupiedRooms occupiedRooms) throws RemoteServiceException {
+		OccupiedRooms occupiedRoom = this.occupiedRoomRepositroy.save(occupiedRooms);
+		return occupiedRoom;
 	}
 	
 	/**
@@ -98,7 +94,7 @@ public class DefaultRoomBookingServices implements RoomBookingService{
 	@Override
 	public List<OccupiedRooms> checkRoomsAvailabiltyForGivenDates(long room_id, Date check_in,Date check_out)
 			throws RemoteServiceException {
-		List<OccupiedRooms> roomList = occupiedRoomsRequestDAO.findAvailableRoomsBetweenDates(room_id, check_in, check_out);
+		List<OccupiedRooms> roomList = this.occupiedRoomRepositroy.findByCheckInDateAndCheckOutDate(check_in, check_out,room_id);
 		return roomList;
 		
 	}
@@ -112,26 +108,10 @@ public class DefaultRoomBookingServices implements RoomBookingService{
      * @return The total bill amount for Room details
      */
 
-	public List<Book> findBookingsCost(long customeId) throws RemoteServiceException {
+	public List<Double> findBookingsCost(long customeId) throws RemoteServiceException {
 		// TODO Auto-generated method stub
-		List<Book> roomList = customerRequestDAO.findBookingsCost(customeId);
+		List<Double> roomList = this.bookRoomRepository.getRoomChargesByCustomerId(customeId);
 		return roomList;
 	}
-	
-	/**
-	 * To convert DATE in simple format .
-	 */
-	private Date getDateFromat(String strDate) {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        Date date = null;
-		try {
-			date = sdf.parse(strDate);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return date;
-	}
-	
 	
 }

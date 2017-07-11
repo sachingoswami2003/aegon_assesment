@@ -1,20 +1,26 @@
 package com.aegon.model;
 
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 
 
 @Entity
 @Table(name = "customers")
-public class Customers {
+public class Customers implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@SequenceGenerator(name="customer_Id_gen", sequenceName="customer_Id", initialValue = 1)
+	@GeneratedValue(generator = "customer_Id_gen")
 	private Long customerId;
 	private String firstName;
 	private String lastName;
 	private boolean membershipStatus;
+	private Book book;
 	
 	public Customers() {
 		
@@ -25,6 +31,20 @@ public class Customers {
 		this.lastName = lastName;
 		this.membershipStatus = membershipStatus;
 	}
+	/**
+	 * @return the book
+	 */
+	public Book getBook() {
+		return book;
+	}
+
+	/**
+	 * @param book the book to set
+	 */
+	public void setBook(Book book) {
+		this.book = book;
+	}
+
 	/**
 	 * @return the customerId
 	 */
@@ -74,4 +94,14 @@ public class Customers {
 		this.membershipStatus = membershipStatus;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return getFirstName()+ "," + getLastName()+ "," +isMembershipStatus();
+	}
+	
+	
 }

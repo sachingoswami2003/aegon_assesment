@@ -2,6 +2,7 @@ package com.aegon.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +16,6 @@ import com.aegon.model.Book;
 import com.aegon.model.Customers;
 import com.aegon.model.OccupiedRooms;
 import com.aegon.service.RoomBookingService;
-import com.aegon.service.impl.CustomerCreateService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -35,16 +35,9 @@ import io.swagger.annotations.ApiOperation;
 public class CustomerRoomsDetailsController {
 	private static final String PATH_CUSTOMER_ID = "customerId";
 	
-	private final RoomBookingService roomBookingService;
-	private final CustomerCreateService customerCreateService;
+	@Autowired
+	RoomBookingService roomBookingService;
 
-	/**
-	 * @param roomBookingService
-	 */
-	public CustomerRoomsDetailsController(RoomBookingService roomBookingService, CustomerCreateService customerCreateService) {
-		this.roomBookingService = roomBookingService;
-		this.customerCreateService = customerCreateService;
-	}
 	
 	/**
      * Check room details by Customer Id.
@@ -58,32 +51,12 @@ public class CustomerRoomsDetailsController {
     @ApiOperation(
             value = "Fetches the room list ,cutomer has been booked",
             notes = "Returns room information",
-            response = String.class,
+            response = Customers.class,
             responseContainer = "List"
     )
-	public ResponseEntity<List<OccupiedRooms>> getCustomerRoomDetails(@PathVariable(PATH_CUSTOMER_ID) final long customerId) throws RemoteServiceException {
-        final List<OccupiedRooms> occupiedRoomList = roomBookingService.getCustomerRoomDetails(customerId);
+	public ResponseEntity<List<Book>> getCustomerRoomDetails(@PathVariable(PATH_CUSTOMER_ID) final long customerId) throws RemoteServiceException {
+        final List<Book> occupiedRoomList = roomBookingService.getCustomerRoomDetails(customerId);
         return ResponseEntity.ok(occupiedRoomList);
-    }
-	
-	/**
-     * Check room details by Customer Id.
-     * This will room details booked by specific customer.
-     * 
-     * @param customerId - a user's get room details
-     * @return The Booked rooms details
-     */
-	
-//	@PostMapping("/customers")
-    @ApiOperation(
-            value = "Create the cutomer details",
-            notes = "Returns room information",
-            response = String.class,
-            responseContainer = "List"
-    )
-	public String createCustomer(@RequestBody final Customers customer) throws RemoteServiceException {
-        customerCreateService.create(customer);
-        return "Customer Details Cretaed";
     }
 	
 	/**
@@ -98,11 +71,11 @@ public class CustomerRoomsDetailsController {
     @ApiOperation(
             value = "Fetches the room cost list ,cutomer has been booked",
             notes = "Returns room cost information",
-            response = List.class,
+            response = Double.class,
             responseContainer = "List"
     )
-	public ResponseEntity<List<Book>> getCustomerRoomCostDetails(@PathVariable(PATH_CUSTOMER_ID) final long customerId) throws RemoteServiceException {
-        final List<Book> occupiedRoomCostList = roomBookingService.findBookingsCost(customerId);
+	public ResponseEntity<List<Double>> getCustomerRoomCostDetails(@PathVariable(PATH_CUSTOMER_ID) final long customerId) throws RemoteServiceException {
+        final List<Double> occupiedRoomCostList = roomBookingService.findBookingsCost(customerId);
         return  ResponseEntity.ok(occupiedRoomCostList);
     }
 }

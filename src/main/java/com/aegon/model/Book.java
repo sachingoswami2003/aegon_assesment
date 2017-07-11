@@ -1,5 +1,6 @@
 package com.aegon.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -9,7 +10,9 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "bookroom")
-public class Book {
+public class Book implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,6 +22,11 @@ public class Book {
 	private Date checkOutDate;
 	private int noOfRoomRequired;
 	private boolean roomBreakfastsrviceFlag;
+	
+
+	public Book() {
+		
+	}
 	
 	public Book(Date checkOutDate, Date checkInDate, long customerId, 
 			long bookingId, int noOfRoomRequired, boolean roomBreakfastsrviceFlag) 
@@ -30,6 +38,7 @@ public class Book {
 		this.noOfRoomRequired = noOfRoomRequired;
 		this.roomBreakfastsrviceFlag = roomBreakfastsrviceFlag;
 	}
+
 	
 	/**
 	 * @return the noOfRoomRequired
@@ -69,7 +78,7 @@ public class Book {
 
 	/**
 	 * @param customerId
-	 *            the customerId to set
+	 *  the customerId to set
 	 */
 	public final void setCustomerId(long customerId) {
 		this.customerId = customerId;
@@ -118,18 +127,18 @@ public class Book {
 		this.roomBreakfastsrviceFlag = roomBreakfastsrviceFlag;
 	}
 	
-	/*@Override
-    public boolean equals(Object o) {
+	/**
+	 * @return the roomCharges
+	 *//*
+	public final float getRoomCharges() {
+		return roomCharges;
+	}
 
-        if (o == this) return true;
-        if (!(o instanceof Book)) {
-            return false;
-        }
-
-        Book book = (Book) o;
-
-        return book.bookingId.equals(bookingId) &&
-        		book.noOfRoomRequired == noOfRoomRequired &&
-        		book.customerId.equals(customerId);
-    }*/
+	*//**
+	 * @param roomCharges the roomCharges to set
+	 *//*
+	public final void setRoomCharges(float roomCharges) {
+		this.roomCharges = roomCharges;
+	}*/
+	
 }

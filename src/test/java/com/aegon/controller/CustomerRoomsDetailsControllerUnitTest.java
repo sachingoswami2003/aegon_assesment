@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.aegon.controller;
 
 import static org.junit.Assert.assertEquals;
@@ -16,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 
-import com.aegon.model.OccupiedRooms;
+import com.aegon.model.Book;
 import com.aegon.service.RoomBookingService;
 
 /**
@@ -37,12 +34,13 @@ public class CustomerRoomsDetailsControllerUnitTest {
 	public void getCustomerRoomDetails() throws Exception {
 		
 		long testCustomerId = 1;
-		List<OccupiedRooms> occupiedRoomList = new ArrayList<OccupiedRooms>();
 		
-		when(roomBookingServices.getCustomerRoomDetails(testCustomerId)).thenReturn(occupiedRoomList);
+		List<Book> occupiedRoomByCustomerList = new ArrayList<Book>();
+		
+		when(roomBookingServices.getCustomerRoomDetails(testCustomerId)).thenReturn(occupiedRoomByCustomerList);
 		
 		ResponseEntity<?> actualResponse = customerRoomsDetailsController.getCustomerRoomDetails(testCustomerId);
 		
-		assertEquals(ResponseEntity.ok(occupiedRoomList), actualResponse);
+		assertEquals(ResponseEntity.ok(occupiedRoomByCustomerList), actualResponse);
 	}
 }
