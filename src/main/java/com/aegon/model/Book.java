@@ -63,7 +63,7 @@ public class Book implements Serializable{
 
 	/**
 	 * @param bookingId
-	 *            the bookingId to set
+	 * the bookingId to set
 	 */
 	public final void setBookingId(long bookingId) {
 		this.bookingId = bookingId;

@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
-
-import com.aegon.model.Book;
 import com.aegon.model.Customers;
 
 public interface BookRoomRepository extends Repository<Customers, Long> {

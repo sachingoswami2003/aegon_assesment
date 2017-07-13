@@ -66,7 +66,6 @@ public class BookingDetailsControllerUnitTest {
 	
 	@Test
 	public void bookRoom() throws Exception{
-		String str = "Room has been booked";
 		OccupiedRooms occupiedRooms = new OccupiedRooms();
 		
 		when(roomBookingServices.saveRoomDetails(occupiedRooms)).thenReturn(occupiedRooms);
