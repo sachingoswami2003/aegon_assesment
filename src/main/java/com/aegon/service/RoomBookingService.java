@@ -2,10 +2,10 @@ package com.aegon.service;
 
 import java.util.Date;
 import java.util.List;
-
 import com.aegon.exception.RemoteServiceException;
 import com.aegon.model.Book;
 import com.aegon.model.OccupiedRooms;
+import com.aegon.model.Room;
 
 /**
 * <h1>RoomBookingService Interface!</h1>
@@ -68,7 +68,7 @@ public interface RoomBookingService {
 	     * @param departureDate - to check room availability till the given date
 	     * @return The availability of Room details
 	     */
-	    List<OccupiedRooms> checkRoomsAvailabiltyForGivenDates(long room_Id, Date check_In, Date check_out) throws RemoteServiceException;
+	    List<Room> checkRoomsAvailabiltyForGivenDates(Date check_In, Date check_out) throws RemoteServiceException;
 	    
 	    /**
 	     * Check expenses details by Customer Id.

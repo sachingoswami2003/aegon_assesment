@@ -6,7 +6,13 @@ package com.aegon.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -35,24 +41,7 @@ public class OccupiedRooms implements Serializable {
 	private int numberOfRoom;
 	private String roomType;
 	private Long customerId;
-	
-	
-	public OccupiedRooms() {
-		
-	}
 
-	public OccupiedRooms(long bookingId,Date checkOutDate, Date checkInDate, long roomId, 
-			 int numberOfRoom, String roomType, long customerId) 
-	{
-		this.bookingId = bookingId;
-		this.checkInDate = checkInDate;
-		this.checkOutDate = checkOutDate;
-		this.roomId = roomId;
-		this.numberOfRoom = numberOfRoom;
-		this.roomType = roomType;
-		this.customerId = customerId;
-	}
-	
 	
 	/**
 	 * @return the roomType

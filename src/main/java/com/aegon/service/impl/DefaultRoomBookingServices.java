@@ -1,17 +1,16 @@
 package com.aegon.service.impl;
+
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.aegon.dao.impl.BookRoomRepository;
 import com.aegon.dao.impl.OccupiedRoomRepository;
 import com.aegon.exception.RemoteServiceException;
 import com.aegon.model.Book;
 import com.aegon.model.OccupiedRooms;
+import com.aegon.model.Room;
 import com.aegon.service.RoomBookingService;
-
 
 /**
  * @author Sachin
@@ -92,9 +91,9 @@ public class DefaultRoomBookingServices implements RoomBookingService{
      */
 	
 	@Override
-	public List<OccupiedRooms> checkRoomsAvailabiltyForGivenDates(long room_id, Date check_in,Date check_out)
+	public List<Room> checkRoomsAvailabiltyForGivenDates(Date check_in,Date check_out)
 			throws RemoteServiceException {
-		List<OccupiedRooms> roomList = this.occupiedRoomRepositroy.findByCheckInDateAndCheckOutDate(check_in, check_out,room_id);
+		List<Room> roomList = this.occupiedRoomRepositroy.findByCheckInDateAndCheckOutDate(check_in, check_out);
 		return roomList;
 		
 	}

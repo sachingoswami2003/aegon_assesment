@@ -3,10 +3,15 @@ package com.aegon.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 
 /**
- * A Book where users may book stays.
+ * A Book where users may book their stay.
  */
 @Entity
 @Table(name = "bookroom")
@@ -21,24 +26,8 @@ public class Book implements Serializable{
 	private Date checkInDate;
 	private Date checkOutDate;
 	private int noOfRoomRequired;
-	private boolean roomBreakfastsrviceFlag;
+	private String roomBreakfastsrviceFlag = "Y";
 	
-
-	public Book() {
-		
-	}
-	
-	public Book(Date checkOutDate, Date checkInDate, long customerId, 
-			long bookingId, int noOfRoomRequired, boolean roomBreakfastsrviceFlag) 
-	{
-		this.checkInDate = checkInDate;
-		this.checkOutDate = checkOutDate;
-		this.customerId = customerId;
-		this.bookingId = bookingId;
-		this.noOfRoomRequired = noOfRoomRequired;
-		this.roomBreakfastsrviceFlag = roomBreakfastsrviceFlag;
-	}
-
 	
 	/**
 	 * @return the noOfRoomRequired
@@ -108,7 +97,7 @@ public class Book implements Serializable{
 
 	/**
 	 * @param checkOut
-	 *    the checkOut to set
+	 * the checkOut to set
 	 */
 	public final void setCheckOutDate(Date checkOut) {
 		this.checkOutDate = checkOut;
@@ -117,28 +106,13 @@ public class Book implements Serializable{
 	/**
 	 * @return the roomBreakfastsrviceFlag
 	 */
-	public final boolean isRoomBreakfastsrviceFlag() {
+	public final String isRoomBreakfastsrviceFlag() {
 		return roomBreakfastsrviceFlag;
 	}
 	/**
 	 * @param roomBreakfastsrviceFlag the roomBreakfastsrviceFlag to set
 	 */
-	public final void setRoomBreakfastsrviceFlag(boolean roomBreakfastsrviceFlag) {
+	public final void setRoomBreakfastsrviceFlag(String roomBreakfastsrviceFlag) {
 		this.roomBreakfastsrviceFlag = roomBreakfastsrviceFlag;
 	}
-	
-	/**
-	 * @return the roomCharges
-	 *//*
-	public final float getRoomCharges() {
-		return roomCharges;
-	}
-
-	*//**
-	 * @param roomCharges the roomCharges to set
-	 *//*
-	public final void setRoomCharges(float roomCharges) {
-		this.roomCharges = roomCharges;
-	}*/
-	
 }

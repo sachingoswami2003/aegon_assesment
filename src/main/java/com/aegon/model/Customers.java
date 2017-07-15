@@ -3,9 +3,11 @@ package com.aegon.model;
 
 import java.io.Serializable;
 
-import javax.persistence.*;
-
-
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "customers")
@@ -22,15 +24,6 @@ public class Customers implements Serializable {
 	private boolean membershipStatus;
 	private Book book;
 	
-	public Customers() {
-		
-	}
-	
-	public Customers(String firstName, String lastName, boolean membershipStatus) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.membershipStatus = membershipStatus;
-	}
 	/**
 	 * @return the book
 	 */

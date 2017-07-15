@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RemoteServiceException extends Exception {
-    private final List<String> errors;
+	
+    /**
+	 * Added serialVersionUID
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private final List<String> errors;
 
     public RemoteServiceException(final String message, final List<String> errors) {
         this(message, errors, null);

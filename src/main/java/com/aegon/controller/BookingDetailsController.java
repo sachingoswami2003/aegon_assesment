@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aegon.exception.RemoteServiceException;
+import com.aegon.model.Book;
+import com.aegon.model.Customers;
 import com.aegon.model.OccupiedRooms;
+import com.aegon.model.Room;
 import com.aegon.service.RoomBookingService;
 
 import io.swagger.annotations.ApiOperation;
@@ -37,6 +40,7 @@ import io.swagger.annotations.ApiOperation;
 public class BookingDetailsController {
 	
 	private static final String PATH_ROOM_ID = "roomId";
+	private static final String PATH_CUSTOMER_ID = "customerId";
 		
 	@Autowired
 	RoomBookingService roomBookingService;
@@ -59,7 +63,8 @@ public class BookingDetailsController {
 	public ResponseEntity<List<OccupiedRooms>> getRoomInfo(@PathVariable(PATH_ROOM_ID) final long roomId) throws RemoteServiceException {
         
     	final List<OccupiedRooms> roomlist = roomBookingService.getRoomDetails(roomId);
-        return ResponseEntity.ok(roomlist);
+        
+    	return ResponseEntity.ok(roomlist);
     }
     
 /**
@@ -75,19 +80,22 @@ public class BookingDetailsController {
     @ApiOperation(
             value = "Fetches the room avalability between two dates",
             notes = "Returns room information",
-            response = String.class,
+            response = Room.class,
             responseContainer = "List"
     )
-	public ResponseEntity<List<OccupiedRooms>> getRoomAvailability(@RequestParam(PATH_ROOM_ID) final long roomId,
+	public List<Room> getRoomAvailability(
 			@RequestParam(name = "check_in", defaultValue = "1900-01-01") @DateTimeFormat(pattern = "yyyy-mm-dd") Date check_in, 
 			@RequestParam(name = "check_out", defaultValue = "2200-01-01") @DateTimeFormat(pattern = "yyyy-mm-dd") Date check_out) throws RemoteServiceException {
         
-    	List<OccupiedRooms> roomList = roomBookingService.checkRoomsAvailabiltyForGivenDates(roomId, check_in, check_out);
-    	return ResponseEntity.ok(roomList); 
+    	List<Room> roomList = roomBookingService.checkRoomsAvailabiltyForGivenDates(check_in, check_out);
+    	
+    	return roomList; 
     }
     
-/**
-   * This method is used to provide rooms booking service  . 
+ /**
+   * This method is used to provide rooms booking service.
+   * User can book the room only when UX will allow the customer to book
+   * as per room is available . 
    * @param Book object This is the parameter to receive room details for room booking
    * @param roomId This is the parameter to book room 
    * @return ResponseEntity with list of BookedRoom details.
@@ -104,7 +112,8 @@ public class BookingDetailsController {
 	public OccupiedRooms bookRoom(@RequestBody final OccupiedRooms occupiedRooms) throws RemoteServiceException {
 		
 		OccupiedRooms roomOccupiedRoomsBooking = roomBookingService.saveRoomDetails(occupiedRooms);
-    	return roomOccupiedRoomsBooking;
+    	
+		return roomOccupiedRoomsBooking;
     }
     
 /**
@@ -124,6 +133,53 @@ public class BookingDetailsController {
     public ResponseEntity<OccupiedRooms> updateBookedRoom(@RequestBody final OccupiedRooms occupiedRoom) throws RemoteServiceException {
     	
     	OccupiedRooms updatedRoom = roomBookingService.updateRoomDetails(occupiedRoom);
+    	
     	return ResponseEntity.ok(updatedRoom);
     }
+    
+    
+    /**
+     * Check room details by Customer Id.
+     * This will room details booked by specific customer.
+     * 
+     * @param customerId - a user's get room details
+     * @return The Booked rooms details
+     */
+	
+	@GetMapping("/booking/rooms/{customerId}")
+    @ApiOperation(
+            value = "Fetches the room list ,cutomer has been booked",
+            notes = "Returns room information",
+            response = Customers.class,
+            responseContainer = "List"
+    )
+	public ResponseEntity<List<Book>> getCustomerRoomDetails(@PathVariable(PATH_CUSTOMER_ID) final long customerId) throws RemoteServiceException {
+        
+		final List<Book> occupiedRoomList = roomBookingService.getCustomerRoomDetails(customerId);
+        
+		return ResponseEntity.ok(occupiedRoomList);
+    }
+	
+	/**
+     * Check room amount by Customer Id.
+     * This will provide details booked by specific customer.
+     * 
+     * @param customerId - a user's get room details
+     * @return The Booked rooms details with amount
+     */
+	
+	@GetMapping("/booking/cost/{customerId}")
+    @ApiOperation(
+            value = "Fetches the room cost list ,cutomer has been booked",
+            notes = "Returns room cost information",
+            response = Double.class,
+            responseContainer = "List"
+    )
+	public ResponseEntity<List<Double>> getCustomerRoomCostDetails(@PathVariable(PATH_CUSTOMER_ID) final long customerId) throws RemoteServiceException {
+        
+		final List<Double> occupiedRoomCostList = roomBookingService.findBookingsCost(customerId);
+        
+		return  ResponseEntity.ok(occupiedRoomCostList);
+    }
+
 }

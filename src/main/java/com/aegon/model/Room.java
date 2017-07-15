@@ -2,7 +2,11 @@ package com.aegon.model;
 
 import java.io.Serializable;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * @author Sachin
@@ -24,12 +28,6 @@ public class Room implements Serializable {
 	private float breakFastPrice;
 	private OccupiedRooms occupiedRooms;
 	
-	
-	public Room(String roomType, float roomPrice, float breakFastPrice) {
-		this.roomType = roomType;
-		this.roomPrice = roomPrice;
-		this.breakFastPrice = breakFastPrice;
-	}
 	/**
 	 * @return the roomId
 	 */
