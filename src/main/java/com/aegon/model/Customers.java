@@ -3,11 +3,16 @@ package com.aegon.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.NaturalId;
 
 @Entity
 @Table(name = "customers")
@@ -19,9 +24,17 @@ public class Customers implements Serializable {
 	@SequenceGenerator(name="customer_Id_gen", sequenceName="customer_Id", initialValue = 1)
 	@GeneratedValue(generator = "customer_Id_gen")
 	private Long customerId;
+	
+	@Column(nullable = false)
 	private String firstName;
+	
+	@Column(nullable = false)
 	private String lastName;
+	
 	private boolean membershipStatus;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "bookingId")
 	private Book book;
 	
 	/**

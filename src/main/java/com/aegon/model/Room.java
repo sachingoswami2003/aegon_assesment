@@ -2,11 +2,16 @@ package com.aegon.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.NaturalId;
 
 /**
  * @author Sachin
@@ -23,10 +28,28 @@ public class Room implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long roomId;
+	
+	@Column(nullable = false)
 	private String roomType;
+	
+	@Column(nullable = false)
 	private float roomPrice;
+	
 	private float breakFastPrice;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "occupiedId")
 	private OccupiedRooms occupiedRooms;
+	
+	public OccupiedRooms getOccupiedRooms() {
+		return occupiedRooms;
+	}
+	/**
+	 * @param occupiedRooms the occupiedRooms to set
+	 */
+	public void setOccupiedRooms(OccupiedRooms occupiedRooms) {
+		this.occupiedRooms = occupiedRooms;
+	}
 	
 	/**
 	 * @return the roomId
@@ -79,15 +102,7 @@ public class Room implements Serializable {
 	/**
 	 * @return the occupiedRooms
 	 */
-	public OccupiedRooms getOccupiedRooms() {
-		return occupiedRooms;
-	}
-	/**
-	 * @param occupiedRooms the occupiedRooms to set
-	 */
-	public void setOccupiedRooms(OccupiedRooms occupiedRooms) {
-		this.occupiedRooms = occupiedRooms;
-	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */

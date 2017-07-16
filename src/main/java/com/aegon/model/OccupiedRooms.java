@@ -7,11 +7,14 @@ package com.aegon.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -31,30 +34,25 @@ public class OccupiedRooms implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long occupiedId;
 	
-	@DateTimeFormat(pattern = "yyyy-mm-dd")
+	@Column(nullable = false)
+	@Temporal(TemporalType.DATE)
 	private Date checkOutDate;
 	
-	@DateTimeFormat(pattern = "yyyy-mm-dd")
+	@Column(nullable = false)
+	@Temporal(TemporalType.DATE)
 	private Date checkInDate;
+	
+	@Column(nullable = false)
 	private long roomId;
+	
 	private long bookingId;
+	
+	@Column(nullable = false)
 	private int numberOfRoom;
-	private String roomType;
+	
+	@Column(nullable = false)
 	private Long customerId;
 
-	
-	/**
-	 * @return the roomType
-	 */
-	public final String getRoomType() {
-		return roomType;
-	}
-	/**
-	 * @param roomType the roomType to set
-	 */
-	public final void setRoomType(String roomType) {
-		this.roomType = roomType;
-	}
 	/**
 	 * @return the numberOfRoom
 	 */
@@ -148,7 +146,7 @@ public class OccupiedRooms implements Serializable {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return getRoomType() + "," + getBookingId() + "," + getNumberOfRoom() + "," + getCheckInDate() + "," + getCheckOutDate();
+		return  getBookingId() + "," + getNumberOfRoom() + "," + getCheckInDate() + "," + getCheckOutDate();
 	}
 	
 	

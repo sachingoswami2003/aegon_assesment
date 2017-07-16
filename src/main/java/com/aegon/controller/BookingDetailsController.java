@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -83,13 +84,17 @@ public class BookingDetailsController {
             response = Room.class,
             responseContainer = "List"
     )
-	public List<Room> getRoomAvailability(
+	public ResponseEntity<?> getRoomAvailability(
 			@RequestParam(name = "check_in", defaultValue = "1900-01-01") @DateTimeFormat(pattern = "yyyy-mm-dd") Date check_in, 
 			@RequestParam(name = "check_out", defaultValue = "2200-01-01") @DateTimeFormat(pattern = "yyyy-mm-dd") Date check_out) throws RemoteServiceException {
-        
-    	List<Room> roomList = roomBookingService.checkRoomsAvailabiltyForGivenDates(check_in, check_out);
     	
-    	return roomList; 
+    	final HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+    	
+    	List<Room> roomList = roomBookingService.checkRoomsAvailabiltyForGivenDates(check_in, check_out);
+    	if(roomList!=null && roomList.size() > 0)
+    		return ResponseEntity.ok(roomList);
+    	else
+    		return ResponseEntity.status(httpStatus).build();
     }
     
  /**
@@ -109,11 +114,13 @@ public class BookingDetailsController {
             notes = "Set available room details as a response object",
             response = OccupiedRooms.class
     )
-	public OccupiedRooms bookRoom(@RequestBody final OccupiedRooms occupiedRooms) throws RemoteServiceException {
+	public ResponseEntity<?> bookRoom(@RequestBody final OccupiedRooms occupiedRooms) throws RemoteServiceException {
 		
 		OccupiedRooms roomOccupiedRoomsBooking = roomBookingService.saveRoomDetails(occupiedRooms);
-    	
-		return roomOccupiedRoomsBooking;
+    	if(roomOccupiedRoomsBooking != null)
+    		return ResponseEntity.ok(roomOccupiedRoomsBooking);
+    	else
+    		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build() ;
     }
     
 /**
@@ -130,11 +137,14 @@ public class BookingDetailsController {
         notes = "if the customer change his bookings details, system update accordingly",
         response = OccupiedRooms.class
     )
-    public ResponseEntity<OccupiedRooms> updateBookedRoom(@RequestBody final OccupiedRooms occupiedRoom) throws RemoteServiceException {
+    public ResponseEntity<?> updateBookedRoom(@RequestBody final OccupiedRooms occupiedRoom) throws RemoteServiceException {
     	
     	OccupiedRooms updatedRoom = roomBookingService.updateRoomDetails(occupiedRoom);
     	
-    	return ResponseEntity.ok(updatedRoom);
+    	if(updatedRoom != null)
+    		return ResponseEntity.ok(updatedRoom);
+    	else
+    		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build() ;
     }
     
     

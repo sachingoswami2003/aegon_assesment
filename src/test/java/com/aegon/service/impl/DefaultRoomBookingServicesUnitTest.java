@@ -20,6 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import com.aegon.dao.impl.OccupiedRoomRepository;
 import com.aegon.model.Book;
 import com.aegon.model.OccupiedRooms;
+import com.aegon.model.Room;
 
 /**
  * @author Sachin Goswami
@@ -82,17 +83,17 @@ public class DefaultRoomBookingServicesUnitTest {
 	
 	@Test
 	public void checkRoomsAvailabiltyForGivenDates() throws Exception {
-		/*long roomId = 123;
+		
 		Date testCheckInDate = getDateFromat("07-07-2017");
 		Date testCheckOutDate = getDateFromat("08-07-2017");
 		
-		List<OccupiedRooms> availableRoomList = new ArrayList<OccupiedRooms>();
+		List<Room> availableRoomList = new ArrayList<Room>();
 		
-		when(occupiedRoomsRepository.findByCheckInDateAndCheckOutDate(testCheckInDate, testCheckOutDate,roomId)).thenReturn(availableRoomList);
+		when(occupiedRoomsRepository.findByCheckInDateAndCheckOutDate(testCheckInDate, testCheckOutDate)).thenReturn(availableRoomList);
 		
-		List<OccupiedRooms> actualRoomList = defaultRoomBookingServices.checkRoomsAvailabiltyForGivenDates(roomId, testCheckInDate, testCheckOutDate);
+		List<Room> actualRoomList = defaultRoomBookingServices.checkRoomsAvailabiltyForGivenDates(testCheckInDate, testCheckOutDate);
 		
-		assertEquals(actualRoomList, availableRoomList);*/
+		assertEquals(actualRoomList, availableRoomList);
 	}
 	
 	/**
