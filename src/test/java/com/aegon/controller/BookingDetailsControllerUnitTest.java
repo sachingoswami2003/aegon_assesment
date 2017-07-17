@@ -21,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 
 import com.aegon.model.Book;
 import com.aegon.model.OccupiedRooms;
-import com.aegon.model.Room;
 import com.aegon.service.RoomBookingService;
 
 /**

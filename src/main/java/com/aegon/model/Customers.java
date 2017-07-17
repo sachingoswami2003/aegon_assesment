@@ -12,8 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.NaturalId;
-
 @Entity
 @Table(name = "customers")
 public class Customers implements Serializable {

@@ -1,5 +1,8 @@
 package com.aegon.service.impl;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,9 +94,10 @@ public class DefaultRoomBookingServices implements RoomBookingService{
      */
 	
 	@Override
-	public List<Room> checkRoomsAvailabiltyForGivenDates(Date check_in,Date check_out)
+	public List<Long> checkRoomsAvailabiltyForGivenDates(Date check_in,Date check_out)
 			throws RemoteServiceException {
-		List<Room> roomList = this.occupiedRoomRepositroy.findByCheckInDateAndCheckOutDate(check_in, check_out);
+		
+		List<Long> roomList = this.occupiedRoomRepositroy.findByCheckInDateAndCheckOutDate(check_in, check_out);
 		return roomList;
 		
 	}
@@ -112,5 +116,6 @@ public class DefaultRoomBookingServices implements RoomBookingService{
 		List<Double> roomList = this.bookRoomRepository.getRoomChargesByCustomerId(customeId);
 		return roomList;
 	}
+	
 	
 }

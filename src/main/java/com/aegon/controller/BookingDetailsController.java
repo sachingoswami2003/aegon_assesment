@@ -90,7 +90,7 @@ public class BookingDetailsController {
     	
     	final HttpStatus httpStatus = HttpStatus.NOT_FOUND;
     	
-    	List<Room> roomList = roomBookingService.checkRoomsAvailabiltyForGivenDates(check_in, check_out);
+    	List<Long> roomList = roomBookingService.checkRoomsAvailabiltyForGivenDates(check_in, check_out);
     	if(roomList!=null && roomList.size() > 0)
     		return ResponseEntity.ok(roomList);
     	else

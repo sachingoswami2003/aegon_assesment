@@ -87,11 +87,11 @@ public class DefaultRoomBookingServicesUnitTest {
 		Date testCheckInDate = getDateFromat("07-07-2017");
 		Date testCheckOutDate = getDateFromat("08-07-2017");
 		
-		List<Room> availableRoomList = new ArrayList<Room>();
+		List<Long> availableRoomList = new ArrayList<Long>();
 		
 		when(occupiedRoomsRepository.findByCheckInDateAndCheckOutDate(testCheckInDate, testCheckOutDate)).thenReturn(availableRoomList);
 		
-		List<Room> actualRoomList = defaultRoomBookingServices.checkRoomsAvailabiltyForGivenDates(testCheckInDate, testCheckOutDate);
+		List<Long> actualRoomList = defaultRoomBookingServices.checkRoomsAvailabiltyForGivenDates(testCheckInDate, testCheckOutDate);
 		
 		assertEquals(actualRoomList, availableRoomList);
 	}

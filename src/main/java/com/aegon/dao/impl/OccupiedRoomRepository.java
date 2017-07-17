@@ -18,9 +18,10 @@ public interface OccupiedRoomRepository extends Repository<OccupiedRooms, Long> 
 	
 	public final static String FIND_BY_CUSTOMER_ID_QUERY = "SELECT B FROM Book B, Customers C WHERE( (B.customerId=C.customerId) AND C.customerId = :customerId)";
 	
-	public final static String FIND_BY_AVAILAIBLE_ROOM_ID_QUERY = "SELECT r from Room r WHERE r.roomId NOT IN(SELECT c.roomId FROM OccupiedRooms c WHERE ((((c.checkInDate >=:checkInDate) AND (c.checkOutDate >=:checkInDate)) "
-			+ "OR ((c.checkOutDate >=:checkOutDate) AND (c.checkInDate >=:checkOutDate)))))";
-
+	public final static String FIND_BY_AVAILAIBLE_ROOM_ID_QUERY = "SELECT r.ROOM_ID from ROOM r where r.ROOM_ID NOT IN (SELECT r.ROOM_ID   from ROOM r , "
+			+ "OCCUPIED_ROOMS c where ((r.ROOM_ID = c.ROOM_ID ) AND ((c.CHECK_IN_DATE >= :checkInDate) OR "
+			+ "(c.CHECK_OUT_DATE >= :checkInDate )) AND ((c.CHECK_IN_DATE >= :checkOutDate) OR (c.CHECK_OUT_DATE >= :checkOutDate))))";
+	
 	public final static String FIND_BY_ROOM_ID_QUERY = "SELECT O FROM OccupiedRooms O, Room R WHERE (O.roomId = R.roomId) AND R.roomId =:roomId";
 	  
 	/**
@@ -43,7 +44,6 @@ public interface OccupiedRoomRepository extends Repository<OccupiedRooms, Long> 
 	/**
 	 * Find available room details between given Dates.
 	 */
-	@Query(FIND_BY_AVAILAIBLE_ROOM_ID_QUERY)
-	List<Room> findByCheckInDateAndCheckOutDate(@Param("checkInDate") Date checkInDate, @Param("checkOutDate") Date checkOutDate);
-	    
+	@Query(value = FIND_BY_AVAILAIBLE_ROOM_ID_QUERY,nativeQuery = true)
+	List<Long> findByCheckInDateAndCheckOutDate(@Param("checkInDate") Date checkInDate, @Param("checkOutDate") Date checkOutDate);
 }

@@ -68,7 +68,7 @@ public interface RoomBookingService {
 	     * @param departureDate - to check room availability till the given date
 	     * @return The availability of Room details
 	     */
-	    List<Room> checkRoomsAvailabiltyForGivenDates(Date check_In, Date check_out) throws RemoteServiceException;
+	    List<Long> checkRoomsAvailabiltyForGivenDates(Date check_In, Date check_out) throws RemoteServiceException;
 	    
 	    /**
 	     * Check expenses details by Customer Id.
