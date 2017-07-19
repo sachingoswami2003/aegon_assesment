@@ -77,20 +77,18 @@ public class BookingDetailsController {
    * @see Exception
    */
 	
-    @GetMapping("/booking/givendates")
+    @GetMapping("/booking/givendates/{check_in}")
     @ApiOperation(
             value = "Fetches the room avalability between two dates",
             notes = "Returns room information",
             response = Room.class,
             responseContainer = "List"
     )
-	public ResponseEntity<?> getRoomAvailability(
-			@RequestParam(name = "check_in", defaultValue = "1900-01-01") @DateTimeFormat(pattern = "yyyy-mm-dd") Date check_in, 
-			@RequestParam(name = "check_out", defaultValue = "2200-01-01") @DateTimeFormat(pattern = "yyyy-mm-dd") Date check_out) throws RemoteServiceException {
+	public ResponseEntity<?> getRoomAvailability(@PathVariable("check_in") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date check_in) throws RemoteServiceException {
     	
     	final HttpStatus httpStatus = HttpStatus.NOT_FOUND;
     	
-    	List<Long> roomList = roomBookingService.checkRoomsAvailabiltyForGivenDates(check_in, check_out);
+    	List<Long> roomList = roomBookingService.checkRoomsAvailabiltyForGivenDates(check_in);
     	if(roomList!=null && roomList.size() > 0)
     		return ResponseEntity.ok(roomList);
     	else

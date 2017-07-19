@@ -12,9 +12,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 /**
@@ -41,7 +45,7 @@ public class OccupiedRooms implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date checkInDate;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, insertable = false, updatable = false)
 	private long roomId;
 	
 	private long bookingId;
@@ -51,6 +55,11 @@ public class OccupiedRooms implements Serializable {
 	
 	@Column(nullable = false)
 	private Long customerId;
+	
+	@ManyToOne
+	@JoinColumn(name = "roomId")
+	@JsonBackReference
+	private Room room;
 
 	/**
 	 * @return the numberOfRoom

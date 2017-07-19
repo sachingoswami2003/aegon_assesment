@@ -24,7 +24,7 @@ import com.aegon.model.OccupiedRooms;
 import com.aegon.service.RoomBookingService;
 
 /**
- * @author Sachin
+ * @author Sachin Goswami
  *
  */
 @RunWith(MockitoJUnitRunner.class)
@@ -54,19 +54,19 @@ public class BookingDetailsControllerUnitTest {
 	public void getRoomAvailability() throws Exception {
 		
 		Date testArriveDate = getDateFromat("2017-07-15");
-		Date testDepartDate = getDateFromat("2017-07-17");
 		
 		final HttpStatus httpStatus = HttpStatus.NOT_FOUND;
 		
 		ResponseEntity<?> mockResponse = ResponseEntity.status(httpStatus).build();
 		
-		ResponseEntity<?> actualResponse = bookingDetailsControler.getRoomAvailability(testArriveDate, testDepartDate);
+		ResponseEntity<?> actualResponse = bookingDetailsControler.getRoomAvailability(testArriveDate);
 		
 		assertEquals(mockResponse, actualResponse);
 	}
 	
 	@Test
 	public void bookRoom() throws Exception{
+		
 		OccupiedRooms occupiedRooms = mock(OccupiedRooms.class);
 		
 		when(roomBookingServices.saveRoomDetails(occupiedRooms)).thenReturn(occupiedRooms);

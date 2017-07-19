@@ -1,21 +1,22 @@
 package com.aegon.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 
 /**
  * @author Sachin
  *
- * Room Details where users booked their stays.
+ * Room Details like type , price.
  */
 
 @Entity
@@ -36,19 +37,9 @@ public class Room implements Serializable {
 	
 	private float breakFastPrice;
 	
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "occupiedId")
-	private OccupiedRooms occupiedRooms;
 	
-	public OccupiedRooms getOccupiedRooms() {
-		return occupiedRooms;
-	}
-	/**
-	 * @param occupiedRooms the occupiedRooms to set
-	 */
-	public void setOccupiedRooms(OccupiedRooms occupiedRooms) {
-		this.occupiedRooms = occupiedRooms;
-	}
+	@OneToMany(mappedBy="room", cascade = CascadeType.ALL)
+	public List<OccupiedRooms> occupiedRoomList = new ArrayList<OccupiedRooms>();
 	
 	/**
 	 * @return the roomId
@@ -98,9 +89,6 @@ public class Room implements Serializable {
 	public final void setBreakFastPrice(float breakFastPrice) {
 		this.breakFastPrice = breakFastPrice;
 	}
-	/**
-	 * @return the occupiedRooms
-	 */
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
